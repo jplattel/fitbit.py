@@ -21,45 +21,45 @@ class FitBit():
     DEBUG = False
     
     def FetchResponse(self, oauth_request, connection, debug=DEBUG): 
-       url = oauth_request.to_url() 
-       connection.request(oauth_request.http_method,url) 
-       response = connection.getresponse() 
-       s=response.read() 
-       if debug: 
-          print 'requested URL: %s' % url 
-          print 'server response: %s' % s 
-       return s
+        url = oauth_request.to_url() 
+        connection.request(oauth_request.http_method,url) 
+        response = connection.getresponse() 
+        s=response.read() 
+        if debug: 
+            print 'requested URL: %s' % url 
+            print 'server response: %s' % s 
+        return s
    
     def GetRequestToken(self): 
-       connection = httplib.HTTPSConnection(self.SERVER) 
-       consumer = oauth.OAuthConsumer(self.CONSUMER_KEY, self.CONSUMER_SECRET)  
-       signature_method = oauth.OAuthSignatureMethod_PLAINTEXT() 
-       oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, http_url=self.REQUEST_TOKEN_URL) 
-       oauth_request.sign_request(signature_method, consumer, None) 
+        connection = httplib.HTTPSConnection(self.SERVER) 
+        consumer = oauth.OAuthConsumer(self.CONSUMER_KEY, self.CONSUMER_SECRET)  
+        signature_method = oauth.OAuthSignatureMethod_PLAINTEXT() 
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, http_url=self.REQUEST_TOKEN_URL) 
+        oauth_request.sign_request(signature_method, consumer, None) 
 
-       resp = self.FetchResponse(oauth_request, connection) 
-       auth_token = oauth.OAuthToken.from_string(resp) 
+        resp = self.FetchResponse(oauth_request, connection) 
+        auth_token = oauth.OAuthToken.from_string(resp) 
 
-       #build the URL
-       authkey = str(auth_token.key) 
-       authsecret = str(auth_token.secret) 
-       auth_url = "%s?oauth_token=%s" % (self.AUTHORIZATION_URL, auth_token.key) 
-       return auth_url, auth_token
+        #build the URL
+        authkey = str(auth_token.key) 
+        authsecret = str(auth_token.secret) 
+        auth_url = "%s?oauth_token=%s" % (self.AUTHORIZATION_URL, auth_token.key) 
+        return auth_url, auth_token
    
     def GetAccessToken(self, access_code, auth_token):
-       oauth_verifier = access_code
-       connection = httplib.HTTPSConnection(self.SERVER) 
-       consumer = oauth.OAuthConsumer(self.CONSUMER_KEY, self.CONSUMER_SECRET) 
-       signature_method = oauth.OAuthSignatureMethod_PLAINTEXT() 
-       oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=auth_token, http_url=self.ACCESS_TOKEN_URL, parameters={'oauth_verifier': oauth_verifier}) 
-       oauth_request.sign_request(signature_method, consumer, auth_token) 
-       # now the token we get back is an access token 
-       # parse the response into an OAuthToken object 
-       access_token = oauth.OAuthToken.from_string(self.FetchResponse(oauth_request,connection)) 
+        oauth_verifier = access_code
+        connection = httplib.HTTPSConnection(self.SERVER) 
+        consumer = oauth.OAuthConsumer(self.CONSUMER_KEY, self.CONSUMER_SECRET) 
+        signature_method = oauth.OAuthSignatureMethod_PLAINTEXT() 
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=auth_token, http_url=self.ACCESS_TOKEN_URL, parameters={'oauth_verifier': oauth_verifier}) 
+        oauth_request.sign_request(signature_method, consumer, auth_token) 
+        # now the token we get back is an access token 
+        # parse the response into an OAuthToken object 
+        access_token = oauth.OAuthToken.from_string(self.FetchResponse(oauth_request,connection)) 
    
-       # store the access token when returning it 
-       access_token = access_token.to_string() 
-       return access_token
+        # store the access token when returning it 
+        access_token = access_token.to_string() 
+        return access_token
    
     def ApiCall(self, access_token, apiCall='/1/user/-/activities/log/steps/date/today/7d.json'):
         #other API Calls possible, or read the FitBit documentation for the full list.
