@@ -35,6 +35,7 @@ class Fitbit():
         oauth_request = oauth.Request.from_consumer_and_token(consumer, http_url=self.REQUEST_TOKEN_URL)
         oauth_request.sign_request(signature_method, consumer, None)
         resp = self.FetchResponse(oauth_request, connection, self.REQUEST_TOKEN_URL) #passing in explicit url
+        print resp
         auth_token = oauth.Token.from_string(resp)
         auth_url = "%s?oauth_token=%s" % (self.AUTHORIZATION_URL, auth_token.key) #build the URL
         return auth_url, auth_token

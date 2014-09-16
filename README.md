@@ -13,10 +13,10 @@ Make a request token:
 
 	auth_url, auth_token = z.GetRequestToken()
 
-Visit the auth_url and copy the PIN. Use the PIN to get an access token:
+Visit auth url, authenticate and get the code & verifier:
 
-	access_token = z.GetAccessToken(PIN, auth_token)
-	
+	access_token = z.GetAccessToken(code, auth_token, oauth_verifier)
+
 Store the access_token for later usage. You can now call the API with it:
 
 	response = z.ApiCall(access_token, apiCall='/1/user/-/activities/log/steps/date/today/7d.json')
