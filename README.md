@@ -7,7 +7,7 @@ Didn't see one that fitted my needs so I build my own.
 Edit the fitbit.py file with your consumer key and secret.
 
 	import fitbit
-	z = fitbit.FitBit()
+	z = fitbit.Fitbit()
 
 Make a request token:
 
