@@ -1,6 +1,6 @@
 # A python library for the FitBit API
 
-Didn't see one that fitted my needs so I build my own.
+Didn't see one that fitted my needs so I build my own. (this lib features OAuth 1.0, if you're looking for OAuth 2, have a look at this [library from magnific0](https://github.com/magnific0/FitBit.py).
 
 ## Usage
 
